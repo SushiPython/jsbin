@@ -3,6 +3,9 @@
 <head>
   <script src="https://cdn.sushipython.us/content/images/jsbin/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.0/highlight.min.js"></script>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JSBin">
+    <meta property="og:description" content="Simple Anonymous Text Uploader">
   <title>JSBin</title>
   <style type="text/css" media="screen">
       .key {
@@ -21,11 +24,17 @@
         bottom: 0;
         left: 0;
       }
+      button {
+        background-color: #555555;
+        border-radius: 4px;
+        border: none;
+        color: white;
+      }
   </style>
 </head>
 <body>
-<div class="key">Ctrl+S to Save Bin<br><b>Language</b> <span id="lang"></span></div>
-<div id="editor"></div>
+  <div class="key">Ctrl+S to Save Bin<br><b>Language</b> <span id="lang"></span><br><button onClick="save()">Save</button></div>
+  <div id="editor">{{text}}</div>
 <script>
     function guessLanguage(code) {
       let language = hljs.highlightAuto(code, ['javascript', 'python', 'html', 'css', 'xml', 'php', 'go', 'rust', 'scala', 'swift', 'cs', 'c', 'cpp']).language
@@ -62,7 +71,21 @@
       document.getElementById('lang').innerHTML = lang
       editor.getSession().setMode('ace/mode/'+lang)
     });
-
+        function save() {
+        fetch('/upload', {
+          method: 'post',
+          body: JSON.stringify({
+            "data": editor.getSession().getValue()
+          }),
+          headers: { 'Content-Type': 'application/json' }
+        }).then(response => response.text())
+          .then(data => {
+            console.log(JSON.parse(data)['id'])
+            window.location.replace('/bins/'+JSON.parse(data)['id'])
+          }).catch(function (err) {
+          console.warn(err)
+        })
+      }
 </script>
 </body>
 </html>
