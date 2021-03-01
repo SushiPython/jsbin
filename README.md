@@ -1,4 +1,4 @@
-# jsbin
+# JSBin
 ## Simple Anonymous Pastebin- v2
 
 Rewrite of previous text uploader, [PyBin](https://github.com/SushiPython/PyBin).
