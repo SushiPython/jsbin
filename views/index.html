@@ -9,11 +9,18 @@
   <title>JSBin</title>
   <style type="text/css" media="screen">
       .key {
+        -webkit-box-shadow: 0 0 5px 2px black;
+        -moz-box-shadow: 0 0 5px 2px black;
+        box-shadow: 0 0 5px 2px black;
+        border-radius: 3px;
+        padding: 5px;
+        margin: 5px;
+        text-align: center;
         top: 0;
         right: 0;
         position: fixed;
         z-index: +1000;
-        background-color: black;
+        background-color: #202020;
         color: white;
         font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace
       }
@@ -45,6 +52,7 @@
     let lang
     lang = guessLanguage(editor.getSession().getValue())
     editor.getSession().setMode('ace/mode/'+lang)
+    document.getElementById('lang').innerHTML = lang
     editor.setShowPrintMargin(false);
     editor.commands.addCommand({
       name: 'save',
@@ -58,7 +66,6 @@
           headers: { 'Content-Type': 'application/json' }
         }).then(response => response.text())
           .then(data => {
-            console.log(JSON.parse(data)['id'])
             window.location.replace('/bins/'+JSON.parse(data)['id'])
           }).catch(function (err) {
           console.warn(err)
@@ -80,7 +87,6 @@
           headers: { 'Content-Type': 'application/json' }
         }).then(response => response.text())
           .then(data => {
-            console.log(JSON.parse(data)['id'])
             window.location.replace('/bins/'+JSON.parse(data)['id'])
           }).catch(function (err) {
           console.warn(err)
